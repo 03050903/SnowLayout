@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SnowLayout">
+        <attr name="generateY" format="integer" />
+        <attr name="interval" format="integer" />
+    </declare-styleable>
+</resources>

@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -25,26 +26,26 @@ import java.util.Random;
  **/
 public class SnowLayout extends FrameLayout {
 
-    private Drawable[] mDrawables;
-    private int mInterval = 400;
-    private Random mRandom = new Random();
+    private Random mRandom;
     private Handler mHandler;
     private Runnable mRunnable;
 
+    private Drawable[] mDrawables;
+    private int mInterval = 400;
+    private int mGenerateY = 0;
+
 
     public SnowLayout(Context context) {
-        super(context);
-        init(context);
+        this(context, null);
     }
 
     public SnowLayout(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context);
+        this(context, attrs, 0);
     }
 
     public SnowLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context);
+        init(context, attrs);
     }
 
     /**
@@ -52,8 +53,9 @@ public class SnowLayout extends FrameLayout {
      *
      * @param context
      */
-    private void init(Context context) {
+    private void init(Context context, AttributeSet attrs) {
         //初始化生成循环
+        mRandom = new Random();
         mHandler = new Handler();
         mRunnable = new Runnable() {
             @Override
@@ -62,6 +64,14 @@ public class SnowLayout extends FrameLayout {
                 mHandler.postDelayed(this, mInterval);
             }
         };
+
+        TypedArray array = context.getTheme().obtainStyledAttributes(attrs, R.styleable.SnowLayout, 0, 0);
+        try {
+            mGenerateY = array.getInteger(R.styleable.SnowLayout_generateY, 0);
+            mInterval = array.getInteger(R.styleable.SnowLayout_interval, 400);
+        } finally {
+            array.recycle();
+        }
     }
 
     public void setDrawables(Drawable[] drawables) {
@@ -86,7 +96,7 @@ public class SnowLayout extends FrameLayout {
         lp.gravity = Gravity.TOP;
         snow.setLayoutParams(lp);
         snow.setX(startPoint.x);
-        snow.setY(-50);
+        snow.setY(mGenerateY);
         addView(snow);
         AnimatorSet set = getAnimator(snow, startPoint);
         set.start();
@@ -177,7 +187,7 @@ public class SnowLayout extends FrameLayout {
      */
     private PointF getStartPoint() {
         int x = mRandom.nextInt(getWidth());
-        return new PointF(x, -50);
+        return new PointF(x, mGenerateY);
     }
 
     /**
@@ -196,16 +206,34 @@ public class SnowLayout extends FrameLayout {
     }
 
     /**
-     * 开始雪花
+     * 开始下雪
      */
     public void start() {
         mHandler.postDelayed(mRunnable, mInterval);
     }
 
     /**
-     * 停止雪花
+     * 停止停止下雪
      */
     public void stop() {
         mHandler.removeCallbacks(mRunnable);
+    }
+
+    /**
+     * 设置雪花生成的y轴坐标
+     *
+     * @param y
+     */
+    public void setGenerateY(int y) {
+        this.mGenerateY = y;
+    }
+
+    /**
+     * 设置雪花生成的间隔
+     *
+     * @param interval
+     */
+    public void setInterval(int interval) {
+        this.mInterval = interval;
     }
 }
