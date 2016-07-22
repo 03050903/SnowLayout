@@ -5,7 +5,8 @@
     android:id="@+id/snowLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:generateY="-50"
+    app:generateY="-60"
+    app:landDuration="3000"
     app:interval="300"
     tools:context="com.licrafter.snowlayout.demo.MainActivity">
 

@@ -31,8 +31,9 @@ public class SnowLayout extends FrameLayout {
     private Runnable mRunnable;
 
     private Drawable[] mDrawables;
-    private int mInterval = 400;
-    private int mGenerateY = 0;
+    private int mInterval;
+    private int mGenerateY;
+    private int mLandDuration;
 
 
     public SnowLayout(Context context) {
@@ -69,6 +70,7 @@ public class SnowLayout extends FrameLayout {
         try {
             mGenerateY = array.getInteger(R.styleable.SnowLayout_generateY, 0);
             mInterval = array.getInteger(R.styleable.SnowLayout_interval, 400);
+            mLandDuration = array.getInteger(R.styleable.SnowLayout_landDuration, 2000);
         } finally {
             array.recycle();
         }
@@ -137,7 +139,7 @@ public class SnowLayout extends FrameLayout {
         ValueAnimator bezierAnimator = ValueAnimator.ofObject(new BezierEvaluator(getAuxiliaryPoint(0), getAuxiliaryPoint(1))
                 , starPoint, getEndPoint());
         bezierAnimator.setInterpolator(new AccelerateInterpolator());
-        bezierAnimator.setDuration(2000);
+        bezierAnimator.setDuration(mLandDuration);
         bezierAnimator.setTarget(target);
         bezierAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -235,5 +237,14 @@ public class SnowLayout extends FrameLayout {
      */
     public void setInterval(int interval) {
         this.mInterval = interval;
+    }
+
+    /**
+     * 设置雪花降落到底部所需要的时间
+     *
+     * @param duration
+     */
+    public void setLandDuration(int duration) {
+        this.mLandDuration = duration;
     }
 }
