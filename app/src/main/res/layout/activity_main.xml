@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.licrafter.snowlayout.library.SnowLayout
+    android:id="@+id/snowLayout"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.licrafter.snowlayout.demo.MainActivity">
+
+    <TextView
+        android:layout_gravity="center"
+        android:text="下雪了"
+        android:textSize="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</com.licrafter.snowlayout.library.SnowLayout>
